@@ -4,7 +4,7 @@ function parse_git_dirty {
 
 # show git branch 
 function git_branch {
-   branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ /$(parse_git_dirty)/"`"
+   branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ //" -e"s/$/$(parse_git_dirty)/"`"
    if [ "${branch}" != "" ];then
        if [ "${branch}" = "(no branch)" ];then
            branch="(`git rev-parse --short HEAD`...)"
