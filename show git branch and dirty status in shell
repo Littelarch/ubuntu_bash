@@ -1,0 +1,16 @@
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1) =~ "nothing to commit" ]] || echo "*"
+}
+
+# show git branch 
+function git_branch {
+   branch="`git branch 2>/dev/null | grep "^\*" | sed -e "s/^\*\ /$(parse_git_dirty)/"`"
+   if [ "${branch}" != "" ];then
+       if [ "${branch}" = "(no branch)" ];then
+           branch="(`git rev-parse --short HEAD`...)"
+       fi
+       echo " ($branch)"
+   fi
+}
+
+export PS1='\u@\h:\[\033[01;36m\]\W\[\033[01;32m\]$(git_branch)\[\033[00m\]\$ '
